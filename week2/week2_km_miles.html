@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+     <head>
+          <title>Converter</title>
+     </head>
+     <body>
+          <h1>
+              Miles & Kilometers
+          </h1>
+          <p>
+               Here, you can convert a number from km to miles or miles to km.
+          </p>
+          <script>
+               let greeting = prompt("Type K for kilometres or M for miles!");
+               
+               if (greeting === "K" || greeting === "k") {
+                    let number = prompt("What number are we converting?");
+                    number *= 0.621371;
+                    alert(`Your number in miles is ${number}`);
+               } else if (greeting === "M" || greeting === "m" ) {
+                    let number = prompt("What number are we converting?");
+                    number /= 0.621371
+                    alert(`Your number in kilometers is ${number}`);    
+               }
+               else {
+                    alert("Invalid choice! Pleae type 'K' or 'M'.");
+               };
+          </script>
+     </body>
+</html>
