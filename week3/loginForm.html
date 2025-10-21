@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function displayData() {
+            // Get values from the form inputs
+            let firstName = document.customerDataForm.fname.value;
+            let lastName = document.customerDataForm.lname.value;
+            let email = document.customerDataForm.email.value;
+            let password = document.customerDataForm.password.value;
+
+            // Display the data using innerHTML
+            let output = "<strong>Full Name:</strong> " + firstName + " " + lastName + "<br>" +
+                         "<strong>Email:</strong> " + email + "<br>" +
+                         "<strong>Password:</strong> " + password;
+
+            document.getElementById("custDataDisplay").innerHTML = output;
+        }
+    </script>
+</head>
+<body>
+    <h1>SOTD03 - Login Form</h1>
+    <hr />
+
+    <form name="customerDataForm">
+        First Name: <input type="text" name="fname"><br />
+        Last Name: <input type="text" name="lname"><br />
+        Email Address: <input type="text" name="email"><br />
+        Password: <input type="password" name="password"><br />
+        <input type="button" value="Submit" onclick="displayData()">
+    </form>
+
+    <h3>Customer Data</h3>
+    <p id="custDataDisplay"></p>
+</body>
+</html>
