@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajax Inc. Payroll Calculator</title>
+    <script>
+        function calculateGrossPay(hoursWorked) {
+            const hourlyRate = 19.00;
+            if (hoursWorked <= 40) {
+                return hoursWorked * hourlyRate;
+            } else {
+                const regularPay = 40 * hourlyRate;
+                const overtimePay = (hoursWorked - 40) * hourlyRate * 1.5;
+                return regularPay + overtimePay;
+            }
+        }
+
+        function calculateSocialSecurity(grossPay) {
+            const socialSecurityRate = 0.062;
+            return grossPay * socialSecurityRate;
+        }
+
+        function calculateMedicare(grossPay) {
+            const medicareRate = 0.0145;
+            return grossPay * medicareRate;
+        }
+
+        function calculateWithholding(grossPay, allowances) {
+            const withholdingAllowanceAmount = 77.90;
+            const withholdingBase = allowances * withholdingAllowanceAmount;
+            const taxableIncome = grossPay - withholdingBase;
+            const withholdingRate = 0.20;
+            return taxableIncome * withholdingRate;
+        }
+
+        function calculateNetPay(grossPay, socialSecurity, medicare, withholding) {
+            return grossPay - socialSecurity - medicare - withholding;
+        }
+
+        function generatePaystub(employeeName, hoursWorked, allowances) {
+            const grossPay = calculateGrossPay(hoursWorked);
+            const socialSecurity = calculateSocialSecurity(grossPay);
+            const medicare = calculateMedicare(grossPay);
+            const withholding = calculateWithholding(grossPay, allowances);
+            const netPay = calculateNetPay(grossPay, socialSecurity, medicare, withholding);
+
+            const stub = `
+                <strong>Employee Name:</strong> ${employeeName}<br>
+                <strong>Hours Worked:</strong> ${hoursWorked}<br>
+                <strong>Gross Pay:</strong> $${grossPay.toFixed(2)}<br>
+                <strong>Social Security:</strong> $${socialSecurity.toFixed(2)}<br>
+                <strong>Medicare:</strong> $${medicare.toFixed(2)}<br>
+                <strong>Withholding:</strong> $${withholding.toFixed(2)}<br>
+                <strong>Net Pay:</strong> $${netPay.toFixed(2)}
+            `;
+            document.getElementById("payrollStub").innerHTML = stub;
+        }
+
+        function main() {
+            const form = document.forms["employeeForm"];
+            const firstName = form.elements["firstName"].value.trim();
+            const lastName = form.elements["lastName"].value.trim();
+            const hoursWorked = parseFloat(form.elements["hoursWorked"].value);
+            const allowances = parseInt(form.elements["allowances"].value);
+
+            if (!firstName || !lastName || isNaN(hoursWorked) || isNaN(allowances)) {
+                alert("Please fill out all fields with valid values.");
+                return;
+            }
+
+            const employeeName = `${firstName} ${lastName}`;
+            generatePaystub(employeeName, hoursWorked, allowances);
+        }
+    </script>
+</head>
+<body>
+    <h1>SOTD 3_3 - Payroll</h1>
+    <hr />
+    <form name="employeeForm">
+        First Name: <input type="text" name="firstName"><br />
+        Last Name: <input type="text" name="lastName"><br />
+        Enter Hours Worked: <input type="text" name="hoursWorked"><br />
+        Enter number of withholding allowances: <input type="text" name="allowances"><br />
+        <input type="button" value="Submit" onclick="main()">
+    </form>
+    <h3>Payroll Stub</h3>
+    <p id="payrollStub"></p>
+</body>
+</html>
