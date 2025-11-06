@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+     <head>
+          <title>5_1 Playing Card Object</title>
+     </head>
+     <body>
+          <h1>
+               Playing Cards
+          </h1>
+          <p>
+
+          </p>
+          <script>
+               
+             
+               function Card(suit,rank){
+
+                    //create the suit property and assign it the value from the parameter.
+                    this.suit = suit;
+     
+                    //create the rank property and assign it the value from the parameter.
+                    this.rank = rank;
+     
+                    //create the isVisible property and assign boolean false to it.
+                    this.isVisible = false;
+     
+                    //create the show() method.  This method assigns the boolean true to this.isVisible.
+                    this.show = function() {
+                         this.isVisible = true;
+                    }
+     
+                    //create the hide() method.  This method assigns the boolean false to this.isVisible.
+                    this.hide = function() {
+                         this.isVisible = false;
+                    }
+
+                    
+
+               }
+
+               //Instantiate at least 2 different cards. (You can call them card1 and card2, or something like that.)
+               let card1 = new Card("Diamonds", 5);
+               let card2 = new Card("Spades", 3);  
+               //Display the 2 cards to the web page with the Suit, Rank and isVisible values.
+               document.write("Card 1: " + card1.suit + " " + card1.rank + " " + card1.isVisible + "<br>");
+               document.write("Card 2: " + card2.suit + " " + card2.rank + " " + card2.isVisible + "<br>");
+               //Use the show() or hide() on both of the cards to change the "isVisible" object property.
+               card1.show();
+               card2.show();
+
+               //Again, display the 2 cards to the web page with the Suit, Rank and isVisible values to show the change.
+               document.write("<br>");
+               document.write("Card 1: " + card1.suit + " " + card1.rank + " " + card1.isVisible + "<br>");
+               document.write("Card 2: " + card2.suit + " " + card2.rank + " " + card2.isVisible + "<br>");
+
+             
+          </script>
+     </body>
+</html>

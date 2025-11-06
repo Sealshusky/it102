@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+     <head>
+          <title>5_2 Deck of Cards</title>
+     </head>
+     <body>
+          <h1>
+               Deck of Cards
+          </h1>
+          <p>
+
+          </p>
+          <script>
+
+               function Card(suit,rank){
+
+                    //create the suit property and assign it the value from the parameter.
+                    this.suit = suit;
+     
+                    //create the rank property and assign it the value from the parameter.
+                    this.rank = rank;
+     
+                    //create the isVisible property and assign boolean false to it.
+                    this.isVisible = false;
+     
+                    //create the show() method.  This method assigns the boolean true to this.isVisible.
+                    this.show = function() {
+                         this.isVisible = true;
+                    }
+     
+                    //create the hide() method.  This method assigns the boolean false to this.isVisible.
+                    this.hide = function() {
+                         this.isVisible = false;
+                    }
+
+               }
+
+               // Initialize an empty array to store a deck of cards
+               let deck = [];
+
+               // Loop until the deck of 52 cards
+                      //Use Card Object
+                      //Outer Loop Suite
+                      //Inner Loop Rank
+               let suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
+               let ranks = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+
+               for (let i = 0; i < suits.length; i++) {
+                    for (let j = 0; j < ranks.length; j++) {
+                         deck.push(new Card(suits[i], ranks[j]));
+                    }
+               }
+
+               // Initialize an empty array to store the hand of cards
+               let hand = [];
+
+               // Initialize a counter variable to keep track of the number of cards in hand
+               let handCount = 0;
+
+               // Loop until the hand has 3 cards
+               while (handCount < 3) {
+                    let randomIndex = Math.floor(Math.random() * 52);
+                    let selectedCard = deck[randomIndex];
+
+                    // Check if the picked card is not already dealt (not in the hand)
+                    if (!selectedCard.isVisible) {
+
+                         // Deal the card to the hand
+                         hand.push(selectedCard);
+
+                         // Mark the card as "dealt" to avoid duplicates
+                         selectedCard.show();
+
+                         // Increment the card counter
+                         handCount++;
+                    }
+               }
+
+               // Output the hand of cards
+               document.write("<h2>Your Hand:</h2>");
+               for (let i = 0; i < hand.length; i++) {
+                    document.write("Card " + (i + 1) + ": " + hand[i].suit + " " + hand[i].rank + " (Visible: " + hand[i].isVisible + ")<br>");
+               }
+
+          </script>
+     </body>
+</html>
