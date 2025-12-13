@@ -12,6 +12,11 @@ const suits = ["spades", "hearts", "diamonds", "clubs"];
 const ranks = ["A",2,3,4,5,6,7,8,9,10,"J","Q","K"];
 var deck = []; 
 
+// hands and game state
+var playerHand = [];
+var dealerHand = [];
+var gameOver = false;
+
 // Validate username
 function validateUserName(username) {
     return new Promise(function(resolve, reject) {
@@ -89,6 +94,7 @@ function shuffleDeck() {
         deck[i].dealt = false;
     }
 
+    resetButtons();
     dealInitialCards(); // deal cards after shuffle
     alert("Deck shuffled and new cards dealt!");
 }
@@ -110,7 +116,171 @@ async function startGame() {
     }
 }
 
+// draw the next undealt card
+function drawCard() {
+    for (var i = 0; i < deck.length; i++) {
+        if (!deck[i].dealt) {
+            deck[i].dealt = true;
+            return deck[i];
+        }
+    }
+    alert("No cards left in deck!");
+    return null;
+}
 
+// calculate the value of a hand
+function calculateHandValue(hand) {
+    var value = 0;
+    var aces = 0;
+
+    hand.forEach(function(card) {
+        if (card.rank === "A") {
+            aces++;
+            value += 11;
+        } else if (card.rank === "J" || card.rank === "Q" || card.rank === "K") {
+            value += 10;
+        } else {
+            value += card.rank;
+        }
+    });
+
+    // adjust aces from 11 to 1 as needed
+    while (value > 21 && aces > 0) {
+        value -= 10;
+        aces--;
+    }
+
+    return value;
+}
+
+// deal initial cards to player and dealer
+function dealInitialCards() {
+    playerHand = [];
+    dealerHand = [];
+    gameOver = false;
+    document.getElementById("resultMessage").textContent = "";
+
+    var p1 = drawCard();
+    var p2 = drawCard();
+    var d1 = drawCard();
+    var d2 = drawCard();
+
+    if (!p1 || !p2 || !d1 || !d2) return;
+
+    playerHand.push(p1);
+    playerHand.push(p2);
+
+    dealerHand.push(d1);
+    d2.hide(); // hide dealer's second card
+    dealerHand.push(d2);
+
+    updateUI();
+
+    var playerValue = calculateHandValue(playerHand);
+    if (playerValue === 21) {
+        dealerHand[1].isVisible = true;
+        updateUI();
+        determineWinner(true);
+    }
+}
+
+// update UI to show current hands
+function updateUI() {
+    var playerDiv = document.getElementById("playerCards");
+    var dealerDiv = document.getElementById("dealerCards");
+
+    playerDiv.innerHTML = "";
+    dealerDiv.innerHTML = "";
+
+    playerHand.forEach(function(card) {
+        playerDiv.innerHTML += card.show();
+    });
+
+    dealerHand.forEach(function(card) {
+        dealerDiv.innerHTML += card.show();
+    });
+
+    var playerValue = calculateHandValue(playerHand);
+    if (playerValue > 21) {
+        endGame("You busted! Dealer wins.");
+    }
+}
+
+// player chooses to hit
+function hit() {
+    if (gameOver) return;
+
+    var card = drawCard();
+    if (!card) return;
+
+    playerHand.push(card);
+    updateUI();
+}
+
+// player chooses to stand; dealer plays
+function stand() {
+    if (gameOver) return;
+
+    dealerHand[1].isVisible = true; // reveal hidden card
+
+    while (calculateHandValue(dealerHand) < 17) {
+        var card = drawCard();
+        if (!card) break;
+        dealerHand.push(card);
+    }
+
+    updateUI();
+    determineWinner(false);
+}
+
+// determine winner after both player and dealer finish
+function determineWinner(fromBlackjack) {
+    var playerValue = calculateHandValue(playerHand);
+    var dealerValue = calculateHandValue(dealerHand);
+
+    if (fromBlackjack) {
+        if (dealerValue === 21) {
+            endGame("Both have Blackjack! Push (tie).");
+        } else {
+            endGame("Blackjack! You win!");
+        }
+        return;
+    }
+
+    if (dealerValue > 21) {
+        endGame("Dealer busts! You win!");
+    } else if (playerValue > dealerValue) {
+        endGame("You win!");
+    } else if (dealerValue > playerValue) {
+        endGame("Dealer wins.");
+    } else {
+        endGame("Push (tie).");
+    }
+}
+
+// end game and disable buttons
+function endGame(message) {
+    gameOver = true;
+    document.getElementById("resultMessage").textContent = message;
+    document.getElementById("hitButton").disabled = true;
+    document.getElementById("standButton").disabled = true;
+}
+
+// reset buttons when new round starts
+function resetButtons() {
+    document.getElementById("hitButton").disabled = false;
+    document.getElementById("standButton").disabled = false;
+}
+
+// return to the initial form screen
+function returnToForm() {
+    document.getElementById("gameArea").style.display = "none";
+    document.getElementById("userForm").style.display = "block";
+    document.getElementById("playerCards").innerHTML = "";
+    document.getElementById("dealerCards").innerHTML = "";
+    document.getElementById("resultMessage").textContent = "";
+    document.userForm.elements[0].value = "";
+}
 </script>
 </head>
 <body>
