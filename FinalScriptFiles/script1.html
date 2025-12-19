@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="demo"></p>
+
+<script>
+  function Truck(gas, mpg) {
+    // mpg property added
+    this.mpg = mpg;
+
+    // gas property already existed
+    this.gas = gas;
+
+    // range property added
+    this.range = this.gas * this.mpg;
+
+    // empty property added
+    this.empty = (this.gas <= 0);
+
+    this.drive = function (miles) {
+      // reduce gas based on miles driven
+      this.gas -= miles / this.mpg;
+
+      // update empty status
+      if (this.gas <= 0) {
+        this.empty = true;
+      }
+
+      // update range after driving
+      this.range = this.gas * this.mpg;
+    };
+
+    this.fill = function (gallons) {
+      // add gas
+      this.gas += gallons;
+
+      // update empty status
+      if (this.gas > 0) {
+        this.empty = false;
+      }
+
+      // update range after filling
+      this.range = this.gas * this.mpg;
+    };
+  }
+
+  // test code
+  test = new Truck(20, 15);
+
+  alert("The range is: " + test.range);
+  test.drive(300);
+  alert("Empty after the drive? " + test.empty);
+  test.fill(10);
+  alert("Empty after the fill? " + test.empty);
+
+</script>
+
+</body>
+</html>
