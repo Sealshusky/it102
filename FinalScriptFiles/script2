@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="demo"></p>
+
+<script>
+  var output = "";
+  var KingCo = ["Seattle", "Bellevue", "Kirkland", "Mercer Island"];
+
+  //1) define PierceCo
+  var PierceCo = ["Tacoma", "Sumner", "Puyallup"];
+
+  //2) combine into Metro
+  var Metro = KingCo.concat(PierceCo);
+
+  output += Metro.toString() + "<br>";
+
+  //3) add Everett to right end
+  Metro.push("Everett");
+
+  output += Metro.toString() + "<br>";
+
+  //4) add Federal Way to left end
+  Metro.unshift("Federal Way");
+
+  output += Metro.toString() + "<br>";
+
+  //5) alphabetize Metro
+  Metro.sort();
+
+  output += Metro.toString() + "<br>";
+
+  //6) remove last element
+  Metro.pop();
+
+  output += Metro.toString() + "<br>";
+
+  //7) replace Kirkland + Mercer Island with Tukwila
+  var index = Metro.indexOf("Kirkland");
+  Metro.splice(index, 2, "Tukwila");
+
+  output += Metro.toString() + "<br>";
+
+  //8) reverse alphabetical order
+  Metro.sort().reverse();
+
+  output += Metro.toString() + "<br>";
+
+  //9) random sort
+  Metro.sort(() => Math.random() - 0.5);
+
+  output += Metro.toString() + "<br>";
+
+  //10 output to page
+  document.getElementById("demo").innerHTML = output;
+
+</script>
+
+</body>
+</html>
